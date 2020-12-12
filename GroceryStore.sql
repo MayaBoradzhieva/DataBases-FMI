@@ -35,7 +35,7 @@ CREATE TABLE Products(
             Price DECIMAL(6,2) NOT NULL,
             -- price per kg and price per piece 
      	CategoryID INT NOT NULL,
-	Type VARCHAR(5) NOT NULL DEFAULT 'piece’' CHECK(Type IN ('kg', 'piece')),
+	Type VARCHAR(5) NOT NULL DEFAULT 'pieceвЂ™' CHECK(Type IN ('kg', 'piece')),
             CONSTRAINT FK_Product_Category
 	FOREIGN KEY(CategoryID)
 	REFERENCES Categories(CategoryID),
@@ -71,7 +71,7 @@ CREATE TABLE Staff(
 
 CREATE TABLE Sales(
     	SaleID INT PRIMARY KEY NOT NULL,
-	CustomerID INT, -- МОЖЕ И ДА Е null, АКО НЕ Е ФИРМА
+	CustomerID INT, -- РњРћР–Р• Р Р”Рђ Р• null, РђРљРћ РќР• Р• Р¤РР РњРђ
 	Date DATETIME NOT NULL DEFAULT GETDATE(), 
 	StaffID INT NOT NULL,
 	CONSTRAINT FK_Sales_Customers 
@@ -120,7 +120,7 @@ ProductID INT PRIMARY KEY NOT NULL,
 	Name VARCHAR(50) NOT NULL,
             Price DECIMAL(6,2) NOT NULL,
             CategoryID INT NOT NULL,
-	Type VARCHAR(5) NOT NULL DEFAULT 'piece’' CHECK(Type IN ('kg', 'piece')),
+	Type VARCHAR(5) NOT NULL DEFAULT 'pieceвЂ™' CHECK(Type IN ('kg', 'piece')),
             UPDATED_AT DATETIME NOT NULL,
 );
 
@@ -148,7 +148,7 @@ END
 
 
 
------------------------ДОБАВЯНЕ НА ДАННИ---------------------------------
+-----------------------Р”РћР‘РђР’РЇРќР• РќРђ Р”РђРќРќР---------------------------------
 
 INSERT INTO Categories(CategoryID,Name)
 VALUES (1,'Grains'),
@@ -232,7 +232,7 @@ VALUES (200, 101, '2019-12-20', 1.70, 30),
                (211, 108, '2020-06-05', 1.50, 20),
                (211, 116, '2020-06-05', 1.50, 20);
 
--- специално за виното - няма срок на годност
+-- СЃРїРµС†РёР°Р»РЅРѕ Р·Р° РІРёРЅРѕС‚Рѕ - РЅСЏРјР° СЃСЂРѕРє РЅР° РіРѕРґРЅРѕСЃС‚
 INSERT INTO DeliveryProducts(DeliveryID, ProductID,PurchasePrice, Quantity)
 VALUES  (204,105, 7.50, 20),
                (204, 113, 7.50, 20),
@@ -250,7 +250,7 @@ INSERT INTO Customers(CustomerID,FirstName,LastName, CompanyName)
 VALUES (965820193,'Liliq','Dimova', 'Cafe VIP'),
                (206318002,'Georgi','Ivanov', 'Bulgaria Restaurant'),
 	   (663256985,'Kostadin','Dimitrov','Club 35'),
-	   (588203698,'Nevena','Mandeva', 'Mandeva’s Company'),
+	   (588203698,'Nevena','Mandeva', 'MandevaвЂ™s Company'),
 	   (996325682,'Mila','Iordanova', 'Orpheus Bar & Dinner'),
                (320569822,'Margarita','Kireva', 'Magis catering'),
                (114451237,'Elena','Krasimirova','Monroe Bar and Grill');
@@ -282,57 +282,57 @@ VALUES (1,101,2, 2.10),
 	   (6,101, 2, 2.10),
 	   (6,104, 2, 0.60);
 
-------------------------------------------------------ЗАЯВКИ---------------------------------------------
+------------------------------------------------------Р—РђРЇР’РљР---------------------------------------------
 
 -----------------------------------------------1.
---Заявка, която извежда ИМЕ и ЦЕНА на продуктите, които са с цена над 4.00лв и са от тип ‘piece’ (на брой)
+--Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РРњР• Рё Р¦Р•РќРђ РЅР° РїСЂРѕРґСѓРєС‚РёС‚Рµ, РєРѕРёС‚Рѕ СЃР° СЃ С†РµРЅР° РЅР°Рґ 4.00Р»РІ Рё СЃР° РѕС‚ С‚РёРї вЂpieceвЂ™ (РЅР° Р±СЂРѕР№)
  
 SELECT Name, Price
 FROM Products
 WHERE Price>4.00 AND Type = 'piece'
  
---Заявка, която извежда ИМЕ и ЦЕНА на продуктите, които започват с буквата ‘N‘
+--Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РРњР• Рё Р¦Р•РќРђ РЅР° РїСЂРѕРґСѓРєС‚РёС‚Рµ, РєРѕРёС‚Рѕ Р·Р°РїРѕС‡РІР°С‚ СЃ Р±СѓРєРІР°С‚Р° вЂNвЂ
  
 SELECT Name, Price
 FROM Products
 WHERE Name LIKE 'N%'
  
---Заявка, която извежда ИМЕ, ЦЕНА и номер на Категория(името на колоната да се казва ‘Category‘) на продуктите, които съдържат в името си или ‘Water‘ или ‘cafe‘. Да са подредени по цената им.
+--Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РРњР•, Р¦Р•РќРђ Рё РЅРѕРјРµСЂ РЅР° РљР°С‚РµРіРѕСЂРёСЏ(РёРјРµС‚Рѕ РЅР° РєРѕР»РѕРЅР°С‚Р° РґР° СЃРµ РєР°Р·РІР° вЂCategoryвЂ) РЅР° РїСЂРѕРґСѓРєС‚РёС‚Рµ, РєРѕРёС‚Рѕ СЃСЉРґСЉСЂР¶Р°С‚ РІ РёРјРµС‚Рѕ СЃРё РёР»Рё вЂWaterвЂ РёР»Рё вЂcafeвЂ. Р”Р° СЃР° РїРѕРґСЂРµРґРµРЅРё РїРѕ С†РµРЅР°С‚Р° РёРј.
  
 SELECT Name, Price, CategoryID AS Category
 FROM Products
 WHERE Name LIKE '%Water%' OR Name LIKE '%cafe%'
 ORDER BY Price
  
---Заявка, която извежда номер на доставка и номер на снабдител на продуктите, които имат дата на доставка 20.03.2020
+--Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РЅРѕРјРµСЂ РЅР° РґРѕСЃС‚Р°РІРєР° Рё РЅРѕРјРµСЂ РЅР° СЃРЅР°Р±РґРёС‚РµР» РЅР° РїСЂРѕРґСѓРєС‚РёС‚Рµ, РєРѕРёС‚Рѕ РёРјР°С‚ РґР°С‚Р° РЅР° РґРѕСЃС‚Р°РІРєР° 20.03.2020
  
 SELECT DeliveryID, SupplierID
 FROM Deliveries
 WHERE DeliveryDate='2020-03-20 '
---Заявка, която извежда номер на ПРОДУКТА и срок на годност на доставените продукти, чието количество е по-малко или равно на 20
+--Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РЅРѕРјРµСЂ РЅР° РџР РћР”РЈРљРўРђ Рё СЃСЂРѕРє РЅР° РіРѕРґРЅРѕСЃС‚ РЅР° РґРѕСЃС‚Р°РІРµРЅРёС‚Рµ РїСЂРѕРґСѓРєС‚Рё, С‡РёРµС‚Рѕ РєРѕР»РёС‡РµСЃС‚РІРѕ Рµ РїРѕ-РјР°Р»РєРѕ РёР»Рё СЂР°РІРЅРѕ РЅР° 20
 SELECT ProductID, ExpirationDate
 FROM DeliveryProducts
 WHERE Quantity <=20
 ORDER BY ProductID
---Заявка, която извежда ПЪРВОИМЕ(името на колоната да се казва ‘NAME‘) и номер на Персонал (името на колоната да се казва ‘PASSWORD‘) на всички работници без тези на ‘Ivan‘ и ‘Lyubka‘
+--Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РџРЄР Р’РћРРњР•(РёРјРµС‚Рѕ РЅР° РєРѕР»РѕРЅР°С‚Р° РґР° СЃРµ РєР°Р·РІР° вЂNAMEвЂ) Рё РЅРѕРјРµСЂ РЅР° РџРµСЂСЃРѕРЅР°Р» (РёРјРµС‚Рѕ РЅР° РєРѕР»РѕРЅР°С‚Р° РґР° СЃРµ РєР°Р·РІР° вЂPASSWORDвЂ) РЅР° РІСЃРёС‡РєРё СЂР°Р±РѕС‚РЅРёС†Рё Р±РµР· С‚РµР·Рё РЅР° вЂIvanвЂ Рё вЂLyubkaвЂ
 SELECT FirstName AS NAME, StaffID AS PASSWORD
 FROM Staff
 WHERE FirstName NOT Like 'Ivan' AND FirstName NOT Like 'Lyubka'
  
 -----------------------------2.
--- Заявка, която извежда : номер на клиент(номер на фирма, която е клиент на магазина), дата, име и фамилия на персонал т.е. съответната информация за продажби, които са били ким фирми и са били в смяната на ‘Maya‘
+-- Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° : РЅРѕРјРµСЂ РЅР° РєР»РёРµРЅС‚(РЅРѕРјРµСЂ РЅР° С„РёСЂРјР°, РєРѕСЏС‚Рѕ Рµ РєР»РёРµРЅС‚ РЅР° РјР°РіР°Р·РёРЅР°), РґР°С‚Р°, РёРјРµ Рё С„Р°РјРёР»РёСЏ РЅР° РїРµСЂСЃРѕРЅР°Р» С‚.Рµ. СЃСЉРѕС‚РІРµС‚РЅР°С‚Р° РёРЅС„РѕСЂРјР°С†РёСЏ Р·Р° РїСЂРѕРґР°Р¶Р±Рё, РєРѕРёС‚Рѕ СЃР° Р±РёР»Рё РєРёРј С„РёСЂРјРё Рё СЃР° Р±РёР»Рё РІ СЃРјСЏРЅР°С‚Р° РЅР° вЂMayaвЂ
 SELECT CustomerID, Date, FirstName, LastName
 FROM Sales,Staff
 WHERE CustomerID IS NOT NULL AND FirstName LIKE 'Maya'
  	AND Sales.StaffID=Staff.StaffID
--- Заявка, която извежда номер на прдукти, които не са били включени в никоя продажба
+-- Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РЅРѕРјРµСЂ РЅР° РїСЂРґСѓРєС‚Рё, РєРѕРёС‚Рѕ РЅРµ СЃР° Р±РёР»Рё РІРєР»СЋС‡РµРЅРё РІ РЅРёРєРѕСЏ РїСЂРѕРґР°Р¶Р±Р°
            	SELECT ProductID FROM Products
 EXCEPT
 ((SELECT ProductID FROM DeliveryProducts)
 INTERSECT
 (SELECT ProductID FROM ProductsSales))
  
--- Заявка, която извежда номер на продукт, количество, продажна цена и дата на продукти, които са продадени от работник с номер 2810
+-- Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РЅРѕРјРµСЂ РЅР° РїСЂРѕРґСѓРєС‚, РєРѕР»РёС‡РµСЃС‚РІРѕ, РїСЂРѕРґР°Р¶РЅР° С†РµРЅР° Рё РґР°С‚Р° РЅР° РїСЂРѕРґСѓРєС‚Рё, РєРѕРёС‚Рѕ СЃР° РїСЂРѕРґР°РґРµРЅРё РѕС‚ СЂР°Р±РѕС‚РЅРёРє СЃ РЅРѕРјРµСЂ 2810
  
 SELECT ProductID,Quantity, SellPrice,Date
 FROM ProductsSales , Sales
@@ -340,7 +340,7 @@ WHERE ProductsSales.SaleID = Sales.SaleID
  	AND StaffID=2810
  
  
--- Заявка, която извежда името на снабдители, от които нямаме доставка
+-- Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РёРјРµС‚Рѕ РЅР° СЃРЅР°Р±РґРёС‚РµР»Рё, РѕС‚ РєРѕРёС‚Рѕ РЅСЏРјР°РјРµ РґРѕСЃС‚Р°РІРєР°
  
 SELECT Name
 FROM Suppliers,
@@ -349,7 +349,7 @@ EXCEPT
 (SELECT SupplierID FROM Deliveries)) AS Table1
 WHERE Suppliers.SupplierID = Table1.SupplierID
  
--- Заявка, която извежда име и фамилия на собственик на компания, компания(името на колоната да се казва ‘Company‘) на тези компании, които са направили покупки
+-- Р—Р°СЏРІРєР°, РєРѕСЏС‚Рѕ РёР·РІРµР¶РґР° РёРјРµ Рё С„Р°РјРёР»РёСЏ РЅР° СЃРѕР±СЃС‚РІРµРЅРёРє РЅР° РєРѕРјРїР°РЅРёСЏ, РєРѕРјРїР°РЅРёСЏ(РёРјРµС‚Рѕ РЅР° РєРѕР»РѕРЅР°С‚Р° РґР° СЃРµ РєР°Р·РІР° вЂCompanyвЂ) РЅР° С‚РµР·Рё РєРѕРјРїР°РЅРёРё, РєРѕРёС‚Рѕ СЃР° РЅР°РїСЂР°РІРёР»Рё РїРѕРєСѓРїРєРё
 SELECT FirstName, LastName,CompanyName AS Company
 FROM Customers, (SELECT * FROM Sales
 WHERE Sales.CustomerID IS NOT NULL) AS CS
@@ -358,8 +358,8 @@ WHERE CS.CustomerID = Customers.CustomerID
 -------------------3.SUBQUERIES-----------------
 
 ----TASK 1
---Изведете имената на продуктите с цена по-висока от 
---цената на продукта Rois Almond 80g.
+--РР·РІРµРґРµС‚Рµ РёРјРµРЅР°С‚Р° РЅР° РїСЂРѕРґСѓРєС‚РёС‚Рµ СЃ С†РµРЅР° РїРѕ-РІРёСЃРѕРєР° РѕС‚ 
+--С†РµРЅР°С‚Р° РЅР° РїСЂРѕРґСѓРєС‚Р° Rois Almond 80g.
 
 SELECT Name
 FROM Products 
@@ -368,8 +368,8 @@ WHERE Price > ALL (SELECT Price
 				   NAME = 'Rois Almond 80g');
 
 ----TASK 2
---Изведете ID-тата на всички продажби, направени от служител с 
---първо име Maya
+--РР·РІРµРґРµС‚Рµ ID-С‚Р°С‚Р° РЅР° РІСЃРёС‡РєРё РїСЂРѕРґР°Р¶Р±Рё, РЅР°РїСЂР°РІРµРЅРё РѕС‚ СЃР»СѓР¶РёС‚РµР» СЃ 
+--РїСЉСЂРІРѕ РёРјРµ Maya
 SELECT SaleID
 FROM Sales 
 WHERE StaffID IN (SELECT StaffID 
@@ -377,8 +377,8 @@ WHERE StaffID IN (SELECT StaffID
 				  WHERE FirstName = 'Maya');
 
 ----TASK 3
---Изведете имената и цените на всички продукти от 
---категорията 'Vegetables and Fruits'
+--РР·РІРµРґРµС‚Рµ РёРјРµРЅР°С‚Р° Рё С†РµРЅРёС‚Рµ РЅР° РІСЃРёС‡РєРё РїСЂРѕРґСѓРєС‚Рё РѕС‚ 
+--РєР°С‚РµРіРѕСЂРёСЏС‚Р° 'Vegetables and Fruits'
 SELECT Name, Price 
 FROM Products 
 WHERE CategoryID IN (SELECT CategoryID 
@@ -386,9 +386,9 @@ WHERE CategoryID IN (SELECT CategoryID
 					 WHERE Name = 'Vegetables and Fruits');
 
 --TASK 4
---Изведете категорията на продуктите,
---които присъстват поне 2 пъти в покупките 
---на клиент
+--РР·РІРµРґРµС‚Рµ РєР°С‚РµРіРѕСЂРёСЏС‚Р° РЅР° РїСЂРѕРґСѓРєС‚РёС‚Рµ,
+--РєРѕРёС‚Рѕ РїСЂРёСЃСЉСЃС‚РІР°С‚ РїРѕРЅРµ 2 РїСЉС‚Рё РІ РїРѕРєСѓРїРєРёС‚Рµ 
+--РЅР° РєР»РёРµРЅС‚
 SELECT Name 
 FROM Categories 
 WHERE CategoryID IN ( SELECT CategoryID
@@ -399,8 +399,8 @@ WHERE CategoryID IN ( SELECT CategoryID
 
 
 --TASK 5
---Изведете срока на годност на продуктите Nescafe
---доставени на 20 март 2020г. 
+--РР·РІРµРґРµС‚Рµ СЃСЂРѕРєР° РЅР° РіРѕРґРЅРѕСЃС‚ РЅР° РїСЂРѕРґСѓРєС‚РёС‚Рµ Nescafe
+--РґРѕСЃС‚Р°РІРµРЅРё РЅР° 20 РјР°СЂС‚ 2020Рі. 
 SELECT ProductID, ExpirationDate 
 FROM DeliveryProducts
 WHERE DeliveryID IN (SELECT DeliveryID 
@@ -415,7 +415,7 @@ AND ProductID IN (SELECT ProductID
 
 
 --TASK 1
---Изведете всички продукти, доставени от фирма 'Nestle'
+--РР·РІРµРґРµС‚Рµ РІСЃРёС‡РєРё РїСЂРѕРґСѓРєС‚Рё, РґРѕСЃС‚Р°РІРµРЅРё РѕС‚ С„РёСЂРјР° 'Nestle'
 SELECT *
 FROM 
 Products P JOIN DeliveryProducts DP ON P.ProductID = DP.ProductID
@@ -425,8 +425,8 @@ WHERE S.Name = 'Nestle';
 
 
 --TASK 2
---Изведете датата на продажба на всички артикули 
---от категорията 'Coffee, tea, cocoa'
+--РР·РІРµРґРµС‚Рµ РґР°С‚Р°С‚Р° РЅР° РїСЂРѕРґР°Р¶Р±Р° РЅР° РІСЃРёС‡РєРё Р°СЂС‚РёРєСѓР»Рё 
+--РѕС‚ РєР°С‚РµРіРѕСЂРёСЏС‚Р° 'Coffee, tea, cocoa'
 SELECT Date AS SellDate
 FROM 
 Products P JOIN ProductsSales PS ON P.ProductID = PS.ProductID
@@ -435,16 +435,16 @@ JOIN Categories C ON C.CategoryID = P.CategoryID
 WHERE C.Name = 'Coffee, tea, cocoa';
 
 --TASK 3
---Изведете името на служителя и времето, в което е извършил своите продажби 
---(кога е бил на касата)
+--РР·РІРµРґРµС‚Рµ РёРјРµС‚Рѕ РЅР° СЃР»СѓР¶РёС‚РµР»СЏ Рё РІСЂРµРјРµС‚Рѕ, РІ РєРѕРµС‚Рѕ Рµ РёР·РІСЉСЂС€РёР» СЃРІРѕРёС‚Рµ РїСЂРѕРґР°Р¶Р±Рё 
+--(РєРѕРіР° Рµ Р±РёР» РЅР° РєР°СЃР°С‚Р°)
 SELECT S.StaffID, FirstName, LastName, Date 
 FROM 
 Sales S JOIN Staff ST ON S.StaffID = ST.StaffID;
 
 
 --TASK 4
---Изведете информация за това кои са 
---доставчиците на отделните категории продукти
+--РР·РІРµРґРµС‚Рµ РёРЅС„РѕСЂРјР°С†РёСЏ Р·Р° С‚РѕРІР° РєРѕРё СЃР° 
+--РґРѕСЃС‚Р°РІС‡РёС†РёС‚Рµ РЅР° РѕС‚РґРµР»РЅРёС‚Рµ РєР°С‚РµРіРѕСЂРёРё РїСЂРѕРґСѓРєС‚Рё
 SELECT DISTINCT S.Name AS SupplierName, C.Name AS CategoryName
 FROM 
 Products P JOIN DeliveryProducts DP ON P.ProductID = DP.ProductID
@@ -454,15 +454,15 @@ JOIN Categories C ON C.CategoryID = P.CategoryID;
 
 
 --TASK 5
---Изведете датата на доставка на всеки продукт 
+--РР·РІРµРґРµС‚Рµ РґР°С‚Р°С‚Р° РЅР° РґРѕСЃС‚Р°РІРєР° РЅР° РІСЃРµРєРё РїСЂРѕРґСѓРєС‚ 
 SELECT P.Name AS ProductName, DeliveryDate
 FROM 
 Products P JOIN DeliveryProducts DP ON P.ProductID = DP.ProductID
 JOIN Deliveries D ON D.DeliveryID = DP.DeliveryID;
 
 --TASK 5 
---Изведете надценката на продуктите
---от категорията Grains
+--РР·РІРµРґРµС‚Рµ РЅР°РґС†РµРЅРєР°С‚Р° РЅР° РїСЂРѕРґСѓРєС‚РёС‚Рµ
+--РѕС‚ РєР°С‚РµРіРѕСЂРёСЏС‚Р° Grains
 SELECT DISTINCT P.NAME, (Price - PurchasePrice) as Surcharge
 FROM Products P JOIN DeliveryProducts DP ON P.ProductID = DP.ProductID
 JOIN Categories C ON C.CategoryID = P.CategoryID
@@ -471,8 +471,8 @@ WHERE C.Name = 'Grains';
 
 
 --TASK 5
---Изведете какви продукти са доставени на 21 декември 2019,
---чието количество надхвърля 10 кг
+--РР·РІРµРґРµС‚Рµ РєР°РєРІРё РїСЂРѕРґСѓРєС‚Рё СЃР° РґРѕСЃС‚Р°РІРµРЅРё РЅР° 21 РґРµРєРµРјРІСЂРё 2019,
+--С‡РёРµС‚Рѕ РєРѕР»РёС‡РµСЃС‚РІРѕ РЅР°РґС…РІСЉСЂР»СЏ 10 РєРі
 SELECT P.Name as ProductName, Quantity, Type
 FROM 
 Products P JOIN DeliveryProducts DP ON P.ProductID = DP.ProductID
@@ -486,26 +486,26 @@ Quantity > 10 AND Type = 'kg';
 --non-clustered, because all tables have primary key
 
 --INDEX 1
---Ако искаме да видим продуктите с определена цена
+--РђРєРѕ РёСЃРєР°РјРµ РґР° РІРёРґРёРј РїСЂРѕРґСѓРєС‚РёС‚Рµ СЃ РѕРїСЂРµРґРµР»РµРЅР° С†РµРЅР°
 CREATE INDEX idx_productPrice
 ON Products(Price)
 
 --INDEX 2
---Търси се продукта по име
+--РўСЉСЂСЃРё СЃРµ РїСЂРѕРґСѓРєС‚Р° РїРѕ РёРјРµ
 CREATE INDEX idx_productName
 ON Products(Name)
 
 --INDEX 3
---При въвеждане на булстат в where клаузата
+--РџСЂРё РІСЉРІРµР¶РґР°РЅРµ РЅР° Р±СѓР»СЃС‚Р°С‚ РІ where РєР»Р°СѓР·Р°С‚Р°
 CREATE INDEX idx_customerCompanyID
 ON Customers(CustomerID)
 
 --INDEX 4
---Търси се и по име, не само по булстат
+--РўСЉСЂСЃРё СЃРµ Рё РїРѕ РёРјРµ, РЅРµ СЃР°РјРѕ РїРѕ Р±СѓР»СЃС‚Р°С‚
 CREATE INDEX idx_customerCompanyName
 ON Customers(CompanyName)
 
 --INDEX 5
---На коя дата е доставено нещо се търси често
+--РќР° РєРѕСЏ РґР°С‚Р° Рµ РґРѕСЃС‚Р°РІРµРЅРѕ РЅРµС‰Рѕ СЃРµ С‚СЉСЂСЃРё С‡РµСЃС‚Рѕ
 CREATE INDEX idx_deliveryDate
 ON Deliveries(DeliveryDate)
